@@ -30,6 +30,7 @@ function Colorblindness(){
         setLevel(e)
         localStorage.setItem('level',e)
         document.getElementById("nextbtn").style.backgroundColor="#3D8F30"
+        document.getElementById("nextbtn").style.color="#ffffff"
     }
     return(
         <div>
@@ -45,19 +46,19 @@ function Colorblindness(){
                 </Row>
                 <Row className="selection">
                     <div className="selectType">
-                        <text className="selectTypeText">色覺障礙類型 :</text>
+                        <text className="selectTypeText">色覺障礙類型：</text>
                         <button className="type" id="r" onClick={()=>changeType("r")}>紅色弱</button>
                         <button className="type" id="g" onClick={()=>changeType("g")}>綠色弱</button>
                         <button className="type" id="by" onClick={()=>changeType("by")}>藍黃色弱</button>
                     </div>
                     <div className="selectLevel">
-                        <text className="selectLevelText">色覺障礙類型 :</text>
+                        <text className="selectLevelText">程度：</text>
                         <button className="level" id="s" onClick={()=>changeLevel("s")}>輕度</button>
                         <button className="level" id="m" onClick={()=>changeLevel("m")}>中度</button>
                         <button className="level" id="l" onClick={()=>changeLevel("l")}>重度</button>
                     </div>
                 </Row>
-                <Link to="/correction"><button className="nextbtn" id="nextbtn">下一步</button></Link>
+                <Link to="/correction"><button className="nextbtn" id="nextbtn" >下一步</button></Link>
             </Col>
 
         </Container>
