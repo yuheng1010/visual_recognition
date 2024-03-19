@@ -1,0 +1,82 @@
+@import url('//fonts.googleapis.com/css2?family=IM+Fell+DW+Pica+SC&display=swap');
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.homeTitle1{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 27px;
+    font-family: "IM Fell DW Pica SC", serif;
+}
+.homeTitle2{
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #393939;
+}
+.head{
+    position: fixed;
+    bottom: -70px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+}
+.ear{
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    animation: pulse 1.5s infinite;
+}
+
+
+/*這邊是想要滑鼠滑過會浮起來的效果*/
+.ear:hover {
+    transform: translateY(-10px);
+}
+
+.earText{
+    position: absolute;
+    top: 89%;
+    left: 62%;
+    color: #FFFFFF;
+}
+.eye{
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    animation: pulse 1.5s infinite;
+}
+.eye:hover {
+    transform: translateY(-10px);
+}
+.eyeText{
+    position: absolute;
+    top: 77%;
+    left: 29%;
+    color: #FFFFFF;
+}
+.head1 {
+
+    position: relative;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
