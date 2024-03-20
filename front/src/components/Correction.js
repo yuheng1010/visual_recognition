@@ -1,8 +1,10 @@
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import React, { useState } from 'react';
 import "./Correction.css"
 function Correction() {
+    const [selectedFile, setSelectedFile] = useState(null);
     let type = ""
     let level = ""
     if(localStorage.getItem('type')&&localStorage.getItem('level')){
@@ -10,8 +12,15 @@ function Correction() {
         level = localStorage.getItem('level')
     }
     function uploaddoc(){
-        document.querySelector('#doc').showModal();
+        document.querySelector('#docD').showModal();
     }
+    function closeD() {
+        document.getElementById('docD').close();
+    }
+    const fileChangedHandler = event => {
+        setSelectedFile(URL.createObjectURL(event.target.files[0]));
+        document.getElementsByClassName('reColSec')[0].style.display = "block";
+    };
   return (
     <div>
     <Container className='con3'>
@@ -29,7 +38,12 @@ function Correction() {
             <button className='reSelBtn'>重新選擇類型/程度</button>
         </Col>
     </Container>
-        <dialog className='doc' id="doc">
+        <dialog className='docD' id="docD" >
+        <button className="close" id="close" onClick={closeD}>X</button>
+        <input type="file" onChange={fileChangedHandler}/>
+        <div className='reColSec'>
+            {selectedFile && <object data={selectedFile} type="application/pdf" width="100%" height="100%"></object>}
+        </div>
         </dialog>
     </div>
   );
