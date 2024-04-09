@@ -1,11 +1,9 @@
 package main
 
-import (
-	"net/http"
-	"visual_recognition/server/routes"
-)
+// "net/http"
+// "visual_recognition/server/routes"
 
 func main() {
-	r := routes.NewRouter()
-	http.ListenAndServe(":8080", r)
+	// r := routes.NewRouter()
+	// http.ListenAndServe(":8080", r)
 }

@@ -10,7 +10,7 @@
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 35px;
+    font-size: 27px;
     font-family: "IM Fell DW Pica SC", serif;
 }
 .homeTitle2{
@@ -18,19 +18,19 @@
     top: 25%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 14px;
+    font-size: 12px;
     color: #393939;
 }
 .head{
     position: fixed;
-    bottom: -30px;
-    left: 49%;
-    transform: translateX(-50%) scale(1);
+    bottom: -70px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
 }
 .ear{
     position: absolute;
-    top: 45%;
-    left: 70%;
+    top: 50%;
+    left: 65%;
     animation: pulse 1.5s infinite;
 }
 
@@ -42,16 +42,14 @@
 
 .earText{
     position: absolute;
-    top: 85%;
-    left: 67%;
+    top: 89%;
+    left: 62%;
     color: #FFFFFF;
-    font-size: 20px;
-    font-family: "IM Fell DW Pica SC", serif;
 }
 .eye{
     position: absolute;
-    top: 45%;
-    left: 23%;
+    top: 50%;
+    left: 25%;
     animation: pulse 1.5s infinite;
 }
 .eye:hover {
@@ -59,11 +57,9 @@
 }
 .eyeText{
     position: absolute;
-    top: 72%;
-    left: 24.5%;
+    top: 77%;
+    left: 29%;
     color: #FFFFFF;
-    font-size: 20px;
-    font-family: "IM Fell DW Pica SC", serif;
 }
 .head1 {
 
@@ -82,5 +78,93 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    .homeTitle1{
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 35px;
+        font-family: "IM Fell DW Pica SC", serif;
+    }
+    .homeTitle2{
+        position: fixed;
+        top: 25%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+        color: #393939;
+    }
+    .head{
+        position: fixed;
+        bottom: -30px;
+        left: 49%;
+        transform: translateX(-50%) scale(1);
+    }
+    .ear{
+        position: absolute;
+        top: 45%;
+        left: 70%;
+        animation: pulse 1.5s infinite;
+    }
+    
+    
+    /*這邊是想要滑鼠滑過會浮起來的效果*/
+    .ear:hover {
+        transform: translateY(-10px);
+    }
+    
+    .earText{
+        position: absolute;
+        top: 85%;
+        left: 67%;
+        color: #FFFFFF;
+        font-size: 20px;
+        font-family: "IM Fell DW Pica SC", serif;
+    }
+    .eye{
+        position: absolute;
+        top: 45%;
+        left: 23%;
+        animation: pulse 1.5s infinite;
+    }
+    .eye:hover {
+        transform: translateY(-10px);
+    }
+    .eyeText{
+        position: absolute;
+        top: 72%;
+        left: 24.5%;
+        color: #FFFFFF;
+        font-size: 20px;
+        font-family: "IM Fell DW Pica SC", serif;
+    }
+    .head1 {
+    
+        position: relative;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
     }
 }
