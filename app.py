@@ -6,6 +6,7 @@ from flask_cors import CORS
 import numpy as np  # 引入 NumPy 模組
 from PIL import Image
 import io
+from Train_Model_hands2 import start
 
 app = Flask(__name__)
 CORS(app)
@@ -62,7 +63,10 @@ def process_pdf(input_path, output_path, type, level):
     new_pdf.save(output_path)
     new_pdf.close()
     pdf_document.close()
-
+    
+def open_cam():
+   start()
+   
 
 @app.route('/process_pdf', methods=['POST'])
 def process_pdf_route():
@@ -80,6 +84,12 @@ def process_pdf_route():
     process_pdf(input_path, output_path, type, level)
 
     return send_file(output_path, mimetype='application/pdf')
+
+@app.route('/mrserver', methods=['GET'])
+def mrserver():
+   open_cam()
+   return {"msg":"success"}
+  
 
 if __name__ == '__main__':
     app.config['UPLOAD_FOLDER'] = 'uploads'
