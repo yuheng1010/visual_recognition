@@ -9,7 +9,7 @@ import numpy as np
 import time
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
-
+from PIL import ImageFont, ImageDraw, Image
 
 # ## Load Data
 
@@ -130,7 +130,7 @@ def start():
         for num, prob in enumerate(res):
             # cv2.rectangle(影像, 頂點座標, 對向頂點座標, 顏色, 線條寬度)
             cv2.rectangle(output_frame, (0,60+num*17), (int(prob*100), 90+num*17), colors[num], -1)
-            cv2.putText(output_frame, actions[num], (0, 85+num*17), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2, cv2.LINE_AA)
+            #cv2.putText(output_frame, actions[num], (0, 85+num*17), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2, cv2.LINE_AA)
         return output_frame
 
 
@@ -281,12 +281,21 @@ def start():
                 sequence = []
                 sentence = []
                 
+            img = np.zeros((40,640,3), dtype='uint8')
+            fontpath = 'NotoSerifCJKtc-Regular.otf'
+            font = ImageFont.truetype(fontpath, 20)
+            imgPil = Image.fromarray(img)
+            draw = ImageDraw.Draw(imgPil)
+            draw.text((0, 0), trans_result, fill=(255, 255, 255), font=font)
+            img = np.array(imgPil)
+            
             cv2.rectangle(frame, (0,0), (640, 40), (245, 117, 16), -1)
             cv2.putText(frame, ' '.join(sentence), (3,30), 
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-            outputframe = cv2.flip(frame, 1)
+            
+            outputframe = cv2.vconcat([frame, img])
             # Show to screen
-            cv2.imshow('OpenCV Feed', outputframe)
+            cv2.imshow('SignLanguage', outputframe)
 
             # Break gracefully
             if cv2.waitKey(10) & 0xFF == ord('x'):
