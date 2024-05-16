@@ -6,6 +6,7 @@ from flask_cors import CORS
 import numpy as np  # 引入 NumPy 模組
 from PIL import Image
 import io
+import Train_Model_hands2
 
 app = Flask(__name__)
 CORS(app)
