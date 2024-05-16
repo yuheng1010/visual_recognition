@@ -46,7 +46,6 @@ function Correction() {
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('file', file);
-        
         formData.append('type', type);
         formData.append('level', level);
 
