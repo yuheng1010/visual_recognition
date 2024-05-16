@@ -8,7 +8,11 @@ import ear from "../img/ear.png"
 import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router,Switch,Route,Link} from "react-router-dom";
 
+
 function Homepage(){
+    function getAPI(){
+        fetch("http://localhost:5000/mrserver")
+    }
 
     return(
         <Container className="con1">
@@ -21,10 +25,12 @@ function Homepage(){
                         <img className="eye" src={eye}/>
                         <div className="eyeText">Colorblindness</div>
                     </Link>
-                    <Link to="/signlanguage">
-                        <img className="ear" src={ear}/>
+                    {/* <Link to="127.0.0.1/5000/mrserver"> */}
+                  
+                        <img onClick={getAPI} className="ear" src={ear}/>
                         <div className="earText">Sign Language</div>
-                    </Link>
+                   
+                    {/* </Link> */}
                     
                 </Row>
             </Col>
