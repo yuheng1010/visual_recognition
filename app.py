@@ -1,5 +1,5 @@
 import fitz  # PyMuPDF
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file,Response
 from werkzeug.utils import secure_filename
 import os
 from flask_cors import CORS
@@ -7,9 +7,13 @@ import numpy as np  # 引入 NumPy 模組
 from PIL import Image
 import io
 from Train_Model_hands2 import start
+import cv2
+import threading
 
 app = Flask(__name__)
 CORS(app)
+outputFrame = None
+lock = threading.Lock()
 
 def process_pdf(input_path, output_path, type, level):
     # print(type)
@@ -66,7 +70,23 @@ def process_pdf(input_path, output_path, type, level):
     
 def open_cam():
    start()
-   
+
+
+def generate_frames():
+    frame = start()
+        
+    # Convert the frame to bytes
+    ret, buffer = cv2.imencode('.jpg', frame)
+    frame_bytes = buffer.tobytes()
+    
+    # Yield the frame bytes
+    yield (b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 @app.route('/process_pdf', methods=['POST'])
 def process_pdf_route():

@@ -11,7 +11,7 @@ import {BrowserRouter as Router,Switch,Route,Link} from "react-router-dom";
 
 function Homepage(){
     function getAPI(){
-        fetch("http://localhost:5000/mrserver")
+        // fetch("http://localhost:5000/mrserver")
     }
 
     return(
@@ -25,12 +25,12 @@ function Homepage(){
                         <img className="eye" src={eye}/>
                         <div className="eyeText">Colorblindness</div>
                     </Link>
-                    {/* <Link to="127.0.0.1/5000/mrserver"> */}
+                    <Link to="/handlan">
                   
                         <img onClick={getAPI} className="ear" src={ear}/>
                         <div className="earText">Sign Language</div>
                    
-                    {/* </Link> */}
+                    </Link>
                     
                 </Row>
             </Col>

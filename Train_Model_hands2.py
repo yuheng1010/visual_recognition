@@ -64,7 +64,7 @@ def start():
     # 获取数据集
     # input_texts為输入的英文手語序 target_texts為對應的中文口語序
     # input_characters用到的所有输入字符,如a,b,c,d,e,……,.,!等
-    data_path_trans = r'C:\Users\88697\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
+    data_path_trans = r'C:\Users\heng\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
     input_texts,target_texts,input_characters,target_characters = get_dataset(data_path_trans)
 
     # 对字符进行排序
@@ -293,7 +293,8 @@ def start():
             cv2.putText(frame, ' '.join(sentence), (3,30), 
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
             
-            outputframe = cv2.vconcat([frame, img])
+            outputframe = frame
+            return outputframe
             # Show to screen
             cv2.imshow('SignLanguage', outputframe)
 
