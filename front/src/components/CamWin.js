@@ -1,50 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+function CamWin(){
+    const [trans, setTrans] = useState(null);
+    const [status, setStatus] = useState(null)
+    const videoRef = useRef();
+    var res 
+    // while(!res){
+        // setInterval(async()=>{
+        //     fetch('http://localhost:5000/getRes', {
+        //     method: 'GET',
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     setTrans(data)
+        // });
+        // },5000)
+        
+    // }
 
-function CamWin() {
-    const [videoSrc, setVideoSrc] = useState('');
+    
 
-    useEffect(() => {
-        const fetchVideoFeed = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/video_feed');
-                const reader = response.body.getReader();
-                const stream = new ReadableStream({
-                    start(controller) {
-                        function push() {
-                            reader.read().then(({ done, value }) => {
-                                if (done) {
-                                    controller.close();
-                                    return;
-                                }
-                                controller.enqueue(value);
-                                push();
-                            });
-                        }
-                        push();
-                    }
-                });
-
-                const blob = new Blob([stream], { type: 'video/webm' });
-                setVideoSrc(URL.createObjectURL(blob));
-            } catch (error) {
-                console.error('Error fetching video feed:', error);
-            }
-        };
-
-        fetchVideoFeed();
-
-        return () => {
-            setVideoSrc('');
-        };
-    }, []);
-
-    return (
+    function openCam() {
+        // fetch("http://localhost:5000/mrserver")
+        setStatus("Detecting...")
+        fetch('http://localhost:5000/mrserver', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            setTrans("辨識結果:"+data.result)
+            console.log(data)
+        });
+        // navigator.mediaDevices.getUserMedia({ video: true })
+        // .then(stream => {
+        //     let video = videoRef.current;
+        //     video.srcObject = stream;
+        //     video.play();
+        // })
+        // .catch(err => {
+        //     console.log("Something went wrong!");
+        // });
+      }
+    return(
         <div>
-            {videoSrc && (
-                <video src={videoSrc} autoPlay />
-            )}
+        <text>{status}</text>
+        <br></br>
+        <text>{trans}</text>
+        <br></br>
+        {/* <video ref={videoRef} /> */}
+        <button className='openCamBtn' onClick={openCam}>開始手語辨識</button>
         </div>
-    );
+    )
 }
-
-export default CamWin;
+export default CamWin
