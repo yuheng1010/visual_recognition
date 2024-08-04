@@ -148,7 +148,6 @@ def start():
             predict_ = predict[:, i].ravel().tolist()
             for j, x in enumerate(predict_):
                 in_decoder[j, i + 1, x] = 1 # 將每個預測出的 token 設為 decoder 下一個 timestamp 的輸入
-
         seq_index = 0
         decoded_sentence = ""
         output_seq = predict[seq_index, :].ravel().tolist()
@@ -241,7 +240,11 @@ def start():
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
             
             outputframe = cv2.vconcat([frame, img])
-            cv2.imshow('SignLanguage', outputframe)
+            # cv2.imshow('SignLanguage', outputframe)
+            ret, buffer = cv2.imencode('.jpg', outputframe)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
             if cv2.waitKey(10) & 0xFF == ord('x'):

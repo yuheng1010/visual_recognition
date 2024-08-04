@@ -101,12 +101,10 @@ def process_pdf_route():
 
     return send_file(output_path, mimetype='application/pdf')
 
-@app.route('/mrserver', methods=['GET'])
-def mrserver():
-    return start()
-    
-    if trans_res:
-        return {"msg":trans_res}
+@app.route('/video_feed')
+def video_feed():
+    return Response(start(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
     
 @app.route('/getRes', methods=['GET'])
 def getRes():
@@ -115,3 +113,4 @@ def getRes():
 if __name__ == '__main__':
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.run(port=5000)
+
