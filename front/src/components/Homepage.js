@@ -12,7 +12,21 @@ import {BrowserRouter as Router,Switch,Route,Link} from "react-router-dom";
 function Homepage(){
     function getAPI(){
         fetch("http://localhost:5000/mrserver")
+        
     }
+    // const [trans, setTrans] = useState(null);
+    //   while(!trans){
+    //     setInterval(async()=>{
+    //         fetch('http://localhost:5000/getRes', {
+    //         method: 'GET',
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         setTrans(data)
+    //     });
+    //     },5000)
+        
+    //   }
 
     return(
         <Container className="con1">
@@ -25,12 +39,13 @@ function Homepage(){
                         <img className="eye" src={eye}/>
                         <div className="eyeText">Colorblindness</div>
                     </Link>
-                    {/* <Link to="127.0.0.1/5000/mrserver"> */}
+                    <Link to="/handlan">
                   
-                        <img onClick={getAPI} className="ear" src={ear}/>
+                        <img  className="ear" onClick={getAPI} src={ear}/>
                         <div className="earText">Sign Language</div>
+                        {/* <text>{trans}</text> */}
                    
-                    {/* </Link> */}
+                    </Link>
                     
                 </Row>
             </Col>

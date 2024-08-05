@@ -1,19 +1,14 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[2]:
 
 
+
+
+import requests
 import os
 import numpy as np
 import time
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 from PIL import ImageFont, ImageDraw, Image
-
-# ## Load Data
-
-# In[3]:
 
 
 # 2. 模組需要的字詞 Labels
@@ -25,11 +20,6 @@ def start():
     label_map = {label:num for num, label in enumerate(actions)}
     print(label_map)
     print(actions.shape[0])
-
-
-    # ## Load Data - model 2
-
-    # In[5]:
 
 
     def get_dataset(data_path_trans):
@@ -56,47 +46,30 @@ def start():
                     target_characters.add(char)
         return input_texts,target_texts,input_characters,target_characters
 
-
-    #------------------------------------------#
-    #   init初始化部分
-    #------------------------------------------#
-
-    # 获取数据集
-    # input_texts為输入的英文手語序 target_texts為對應的中文口語序
-    # input_characters用到的所有输入字符,如a,b,c,d,e,……,.,!等
-    data_path_trans = r'C:\Users\88697\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
+    data_path_trans = r'C:\Users\heng\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
     input_texts,target_texts,input_characters,target_characters = get_dataset(data_path_trans)
 
-    # 对字符进行排序
+
     input_characters = sorted(list(input_characters))
     target_characters = sorted(list(target_characters))
 
-    # 计算共用到了什么字符
     num_encoder_tokens = len(input_characters)
     num_decoder_tokens = len(target_characters)
-    # 计算出最长的序列是多长
+
     max_encoder_seq_length = max([len(txt) for txt in input_texts])
     max_decoder_seq_length = max([len(txt) for txt in target_texts])
 
-    # 建立字母到数字的映射
+
     input_token_index = dict(
         [(char, i) for i, char in enumerate(input_characters)])
     target_token_index = dict(
         [(char, i) for i, char in enumerate(target_characters)])
-    # 求數字到字母的映射
+
     reverse_target_char_index = dict(
         (i, char) for char, i in target_token_index.items())
 
 
-    # # Load Model
-
-    # In[6]:
-
-
     from tensorflow.keras.models import load_model
-
-
-    # In[9]:
 
 
     new_model = load_model('Model/model1_service1_0924.keras')
@@ -104,38 +77,22 @@ def start():
     new_model.summary()
 
 
-    # # Realtime Test
-
-    # In[10]:
-
-
     import cv2
     import mediapipe as mp
     from collections import Counter
 
-
-    # In[11]:
-
-
     mp_holistic = mp.solutions.holistic # Holistic model
     mp_drawing = mp.solutions.drawing_utils # Drawing utilities
 
-
-    # In[12]:
 
 
     colors = [(245,117,16)] * 24
     def prob_viz(res, actions, input_frame, colors):
         output_frame = input_frame.copy()
         for num, prob in enumerate(res):
-            # cv2.rectangle(影像, 頂點座標, 對向頂點座標, 顏色, 線條寬度)
+
             cv2.rectangle(output_frame, (0,60+num*17), (int(prob*100), 90+num*17), colors[num], -1)
-            #cv2.putText(output_frame, actions[num], (0, 85+num*17), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2, cv2.LINE_AA)
         return output_frame
-
-
-    # In[13]:
-
 
     def mediapipe_detection(image, model):
         # Transfer image
@@ -145,8 +102,6 @@ def start():
         results = model.process(image)
         return results
 
-
-    # In[14]:
 
 
     def draw_styled_landmarks(image, results):
@@ -170,18 +125,11 @@ def start():
         ) 
 
 
-    # In[15]:
-
-
     def extract_keypoints_without_face(results):
         pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten() if results.pose_landmarks else np.zeros(33*4)
         lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten() if results.left_hand_landmarks else np.zeros(21*3)
         rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten() if results.right_hand_landmarks else np.zeros(21*3)
         return np.concatenate([lh, rh]) 
-
-
-    # In[16]:
-
 
     def translate(model_opt):
         in_encoder = np.zeros((1, max_encoder_seq_length, num_encoder_tokens),dtype='float32')
@@ -200,7 +148,6 @@ def start():
             predict_ = predict[:, i].ravel().tolist()
             for j, x in enumerate(predict_):
                 in_decoder[j, i + 1, x] = 1 # 將每個預測出的 token 設為 decoder 下一個 timestamp 的輸入
-
         seq_index = 0
         decoded_sentence = ""
         output_seq = predict[seq_index, :].ravel().tolist()
@@ -212,11 +159,6 @@ def start():
 
         return decoded_sentence
 
-
-    # In[17]:
-
-
-    # 1. New detection variables
     sequence = []
     sentence = []
     predictions = []
@@ -270,13 +212,17 @@ def start():
 
                 # Viz probabilities
                 frame = prob_viz(res, actions, frame, colors)
-
+                
             current_time = time.time()  
             if alarm_set and current_time - last_updated_time >= 10:
                 # 時間過10秒，將 sentence 放入下一個模型進行預測
                 trans_result = translate(' '.join(sentence))
                 print('---result---', trans_result)
                 # 清空 sentence 資料
+                url = 'http://localhost:5000/handlanRes'
+                data = {'result': trans_result}  # 將trans_result作為結果放入字典中
+                response = requests.post(url, data=data)
+                return data
                 alarm_set = False
                 sequence = []
                 sentence = []
@@ -294,10 +240,13 @@ def start():
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
             
             outputframe = cv2.vconcat([frame, img])
-            # Show to screen
-            cv2.imshow('SignLanguage', outputframe)
+            # cv2.imshow('SignLanguage', outputframe)
+            ret, buffer = cv2.imencode('.jpg', outputframe)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-            # Break gracefully
+
             if cv2.waitKey(10) & 0xFF == ord('x'):
                 break
         cap.release()

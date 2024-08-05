@@ -1,5 +1,5 @@
 import fitz  # PyMuPDF
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file,Response
 from werkzeug.utils import secure_filename
 import os
 from flask_cors import CORS
@@ -7,10 +7,15 @@ import numpy as np  # 引入 NumPy 模組
 from PIL import Image
 import io
 from Train_Model_hands2 import start
+import cv2
+import threading
+import requests
 
 app = Flask(__name__)
 CORS(app)
-
+outputFrame = None
+lock = threading.Lock()
+trans_res = None
 def process_pdf(input_path, output_path, type, level):
     # print(type)
     # print(level)
@@ -63,10 +68,21 @@ def process_pdf(input_path, output_path, type, level):
     new_pdf.save(output_path)
     new_pdf.close()
     pdf_document.close()
-    
-def open_cam():
-   start()
-   
+
+
+
+
+@app.route('/handlanRes', methods=['POST'])
+def handle_result():
+    if request.method == 'POST':
+        data = request.form  # 获取POST请求中的数据
+        result = data.get('result')  # 获取名为'result'的数据
+        global trans_res
+        trans_res = result
+        # 在这里处理结果，比如打印或者存储到数据库
+        print('Received result:', result)
+
+
 
 @app.route('/process_pdf', methods=['POST'])
 def process_pdf_route():
@@ -85,12 +101,16 @@ def process_pdf_route():
 
     return send_file(output_path, mimetype='application/pdf')
 
-@app.route('/mrserver', methods=['GET'])
-def mrserver():
-   open_cam()
-   return {"msg":"success"}
-  
+@app.route('/video_feed')
+def video_feed():
+    return Response(start(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    
+@app.route('/getRes', methods=['GET'])
+def getRes():
+    return {"msg":trans_res}
 
 if __name__ == '__main__':
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.run(port=5000)
+
