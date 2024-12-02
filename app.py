@@ -7,9 +7,8 @@ import numpy as np  # 引入 NumPy 模組
 from PIL import Image
 import io
 from Train_Model_hands2 import start
-import cv2
 import threading
-import requests
+
 
 app = Flask(__name__)
 CORS(app)
@@ -17,8 +16,6 @@ outputFrame = None
 lock = threading.Lock()
 trans_res = None
 def process_pdf(input_path, output_path, type, level):
-    # print(type)
-    # print(level)
     # 打開PDF
     pdf_document = fitz.open(input_path)
     new_pdf = fitz.open()
@@ -58,7 +55,7 @@ def process_pdf(input_path, output_path, type, level):
         # 修改後的轉回PIL
         img = Image.fromarray(img_array)
 
-        # PIL轉回圖像添加到新的pdf
+        # PIL轉回圖像加到新的pdf
         img_stream = io.BytesIO()
         img.save(img_stream, format='PDF')
         img_pdf = fitz.open("pdf", img_stream.getvalue())
@@ -75,11 +72,10 @@ def process_pdf(input_path, output_path, type, level):
 @app.route('/handlanRes', methods=['POST'])
 def handle_result():
     if request.method == 'POST':
-        data = request.form  # 获取POST请求中的数据
-        result = data.get('result')  # 获取名为'result'的数据
+        data = request.form  
+        result = data.get('result')  
         global trans_res
         trans_res = result
-        # 在这里处理结果，比如打印或者存储到数据库
         print('Received result:', result)
 
 
@@ -89,8 +85,7 @@ def process_pdf_route():
     file = request.files['file']
     type = request.form['type']
     level = request.form['level']
-    # print(type)
-    # print(level)
+
     filename = secure_filename(file.filename)
     input_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     output_path = os.path.join(app.config['UPLOAD_FOLDER'], 'processed_' + filename)
