@@ -46,7 +46,8 @@ def start():
                     target_characters.add(char)
         return input_texts,target_texts,input_characters,target_characters
 
-    data_path_trans = r'C:\Users\heng\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
+    # data_path_trans = r'C:\Users\heng\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
+    data_path_trans = r'./Model/EngToChinese_service1_1029.txt'
     input_texts,target_texts,input_characters,target_characters = get_dataset(data_path_trans)
 
 
