@@ -1,6 +1,6 @@
 # Getting Started with Local Web Application
 
-This project features a React frontend and a FastAPI backend, providing integrated support for sign language recognition and visual aid functionalities.
+This project features a React frontend and a python backend, providing integrated support for sign language recognition and visual aid functionalities.
 
 ### Frontend (React)
 
@@ -35,7 +35,7 @@ See the [deployment](https://facebook.github.io/create-react-app/docs/deployment
 
 ---
 
-### Backend (FastAPI)
+### Backend (Flask)
 
 #### `pip install -r requirements.txt`
 
@@ -43,6 +43,6 @@ Installs the required Python packages from the `requirements.txt` file.
 
 #### `python app.py`
 
-Runs the FastAPI backend server.\
+Runs the backend server.\
 The backend will start at [http://localhost:5000](http://localhost:5000).
 
