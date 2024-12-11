@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import './CamWin.css';
 function CamWin() {
     const [trans, setTrans] = useState('Processing...');
     
@@ -25,8 +25,9 @@ function CamWin() {
         <div>
             <h1>手語辨識</h1>
             <p>結果: {trans}</p>
-            <img src="http://localhost:5000/video_feed" alt="Video" />
-            
+            <div className="video-container">
+                <img src="http://localhost:5000/video_feed" alt="Video" />
+            </div>
         </div>
     );
 }

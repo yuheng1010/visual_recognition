@@ -13,4 +13,6 @@ torch == 2.0.1
 tensorflow == 2.12.0
 APScheduler == 3.10.1
 keyboard
-
+Flask-Cors == 3.0.10
+PyMuPDF == 1.21.1
+Pillow == 9.5.0
