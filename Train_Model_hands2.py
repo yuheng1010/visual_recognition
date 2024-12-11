@@ -46,7 +46,8 @@ def start():
                     target_characters.add(char)
         return input_texts,target_texts,input_characters,target_characters
 
-    data_path_trans = r'C:\Users\heng\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
+    # data_path_trans = r'C:\Users\heng\Desktop\visual_recognition\Model\EngToChinese_service1_1029.txt'
+    data_path_trans = r"./Model/EngToChinese_service1_1029.txt"
     input_texts,target_texts,input_characters,target_characters = get_dataset(data_path_trans)
 
 
@@ -238,7 +239,14 @@ def start():
             cv2.rectangle(frame, (0,0), (640, 40), (245, 117, 16), -1)
             cv2.putText(frame, ' '.join(sentence), (3,30), 
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-            
+            if frame.shape[1] != img.shape[1]:
+                # Resize img to have the same number of columns as frame
+                img = cv2.resize(img, (frame.shape[1], img.shape[0]))
+
+            # Check if they have the same type
+            if frame.dtype != img.dtype:
+                # Convert img to the same type as frame
+                img = img.astype(frame.dtype)
             outputframe = cv2.vconcat([frame, img])
             # cv2.imshow('SignLanguage', outputframe)
             ret, buffer = cv2.imencode('.jpg', outputframe)

@@ -1,0 +1,6 @@
+/* CSS file or within a <style> tag */
+.video-container img {
+    width: 40%px; /* 調整寬度 */
+    height: 400px; /* 調整高度 */
+    object-fit: cover; /* 保持圖像比例 */
+}
